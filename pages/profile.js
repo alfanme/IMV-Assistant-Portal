@@ -95,7 +95,7 @@ export default function profile() {
         },
         {
             title: 'Project Manager Member',
-            value: 'Project Manager Coordiantor',
+            value: 'Project Manager Member',
         },
         { title: 'Creative Coordiantor', value: 'Creative Coordiantor' },
         { title: 'Creative Member', value: 'Creative Member' },
