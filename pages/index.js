@@ -1,82 +1,72 @@
-import Head from 'next/head'
+import Head from 'next/head';
+import Layout from '../components/Layout';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import Image from 'next/image';
+import { PencilIcon } from '@heroicons/react/solid';
 
 export default function Home() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    const router = useRouter();
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
+    useEffect(() => {
+        const hashString = window.location.hash;
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
+        if (hashString) {
+            const hashSplits = hashString.split('&');
+            const hashObj = {
+                accessToken: hashSplits[0].split('=')[1],
+                type: hashSplits[4].split('=')[1],
+            };
 
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
+            if (hashObj.type === 'recovery') {
+                router.push({
+                    pathname: '/auth/request-reset',
+                    query: hashObj,
+                });
+            }
+        }
+    }, []);
 
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
+    return (
+        <>
+            <Head>
+                <title>Home - Assistants & Alumni Portal</title>
+            </Head>
+            <Layout>
+                <h1 className='text-2xl font-semibold'>Welcome home!</h1>
+                <div className='flex items-center justify-evenly'>
+                    <Image
+                        src='/home_illustration.png'
+                        width={500}
+                        height={500}
+                        layout='fixed'
+                        objectFit='contain'
+                    />
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
-    </div>
-  )
+                    <div className='w-1/2'>
+                        <h1 className='text-3xl font-bold mb-8'>
+                            Hi there! 👋🏻
+                        </h1>
+                        <p className='text-lg'>
+                            Now with{' '}
+                            <span className='font-semibold text-blue-500'>
+                                IMV Assistants & Alumni Portal
+                            </span>
+                            , you can manage your profile, write a blog,
+                            organize upcoming events, and many more!
+                        </p>
+                        <p className='text-lg mt-8'>
+                            Let's starts by completing your profile info!
+                        </p>
+                        <button
+                            onClick={() => router.push('/profile')}
+                            className='flex justify-center items-center gap-4 mt-8 px-8 h-12 rounded-lg uppercase font-semibold text-sm text-white bg-blue-500 focus:outline-none hover:bg-blue-700'>
+                            <p>Edit your profile</p>
+                            <PencilIcon className='w-6 h-6' />
+                        </button>
+                    </div>
+                </div>
+            </Layout>
+        </>
+    );
 }
