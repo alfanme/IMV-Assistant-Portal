@@ -21,21 +21,7 @@ export default function login() {
                 password,
             });
             if (error) setErrorMessage(error.message);
-            if (user) {
-                try {
-                    const { error } = await supabase.from('profiles').insert(
-                        {
-                            user_id: user.id,
-                            email: user.email,
-                        },
-                        { returning: 'minimal' }
-                    );
-                    if (error) setErrorMessage(error.message);
-                } catch (error) {
-                    setErrorMessage(error);
-                }
-            }
-            alert('Please confirm your email before login!');
+            if (user) alert('Please confirm your email before login!');
         } catch (error) {
             setErrorMessage(error);
         } finally {
@@ -47,13 +33,41 @@ export default function login() {
     const handleLogin = async () => {
         try {
             setLoading(true);
-            const { error } = await supabase.auth.signIn({
+            const { user, error } = await supabase.auth.signIn({
                 email,
                 password,
             });
             if (error?.message === 'Email not confirmed')
                 alert('Please confirm your email before login!');
             if (error) setErrorMessage(error.message);
+            if (user) {
+                try {
+                    const { data: profile, error: profileError } =
+                        await supabase
+                            .from('profiles')
+                            .select('email')
+                            .match({ email: user.email });
+
+                    if (profileError) console.log(profileError);
+                    await console.log('profile email', profile);
+                    if (profile.length === 0) {
+                        const { error } = await supabase
+                            .from('profiles')
+                            .insert(
+                                {
+                                    user_id: user.id,
+                                    email: user.email,
+                                },
+                                { returning: 'minimal' }
+                            );
+                        if (error) setErrorMessage(error.message);
+                    } else {
+                        console.log('Profile sudah ada');
+                    }
+                } catch (error) {
+                    setErrorMessage(error);
+                }
+            }
         } catch (error) {
             setErrorMessage(error);
         } finally {
@@ -86,7 +100,7 @@ export default function login() {
                     </h1>
 
                     <div className='flex flex-col items-center w-80 mb-16 gap-y-4'>
-                        <p className='text-sm font-semibold text-red-500'>
+                        <p className='text-sm font-semibold text-red-500 text-center'>
                             {errorMessage}
                         </p>
                         <input

@@ -13,9 +13,14 @@ export default function Topbar() {
     const RoleBadge = () => {
         let pathname = router.pathname;
         let rolename = '';
-        if (pathname === '/webinar') rolename = profile.webinar_role;
-        else if (pathname === '/training') rolename = profile.training_role;
-        else rolename = profile.imv_role;
+
+        if (profile.imv_role && profile.webinar_role && profile.training_role) {
+            if (pathname === '/webinar') rolename = profile.webinar_role;
+            else if (pathname === '/training') rolename = profile.training_role;
+            else rolename = profile.imv_role;
+        } else {
+            rolename = 'No Role';
+        }
 
         return (
             <div className='px-4 py-2 rounded-lg text-blue-500 bg-blue-100'>
@@ -31,7 +36,9 @@ export default function Topbar() {
                 <div className='flex items-center gap-x-4'>
                     <div className='text-right'>
                         <p className='text-lg font-semibold'>
-                            {profile.fullname}
+                            {profile.fullname
+                                ? profile.fullname
+                                : profile.email}
                         </p>
                         <div
                             onClick={() => supabase.auth.signOut()}
