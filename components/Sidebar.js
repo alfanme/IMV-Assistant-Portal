@@ -48,8 +48,8 @@ export default function SideBar() {
     const router = useRouter();
 
     return (
-        <div className='sticky top-0 left-0 flex-shrink-0 flex flex-col px-8 py-8 w-80 h-screen text-white'>
-            <div className='flex items-center space-x-4 mb-16'>
+        <div className='fixed bottom-0 md:sticky md:top-0 md:left-0 z-10 flex-shrink-0 flex md:flex-col justify-center md:justify-start items-center md:items-baseline p-4 md:p-8 w-screen md:w-80 h-20 md:h-screen text-white bg-gray-900'>
+            <div className='hidden md:flex items-center space-x-4 mb-16'>
                 <Image
                     src='/logo.webp'
                     width={42}
@@ -62,7 +62,7 @@ export default function SideBar() {
                     <p className='text-xs'>Assistants & Alumni Portal</p>
                 </div>
             </div>
-            <ul className='space-y-3 -mx-2'>
+            <ul className='flex flex-row md:flex-col justify-between md:justify-start md:gap-3 md:-mx-2 px-2 md:px-0 w-full md:w-auto'>
                 {menuItems.map((menu, idx) => {
                     let color =
                         menu.path === router.pathname
@@ -72,14 +72,14 @@ export default function SideBar() {
                         <li
                             onClick={() => router.push(menu.path)}
                             key={idx}
-                            className={`flex items-center space-x-8 px-4 py-4 rounded-xl ${color} cursor-pointer`}>
+                            className={`flex justify-center md:justify-start items-center gap-x-8 p-3 md:p-4 rounded-xl ${color} cursor-pointer`}>
                             {menu.icon}
-                            <p>{menu.title}</p>
+                            <p className='hidden md:block'>{menu.title}</p>
                         </li>
                     );
                 })}
             </ul>
-            <footer className='mt-auto'>
+            <footer className='mt-auto hidden md:block'>
                 <p>©2021 IMV Laboratory 🇮🇩</p>
             </footer>
         </div>

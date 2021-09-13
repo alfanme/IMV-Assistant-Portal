@@ -28,45 +28,39 @@ export default function Home() {
     }, []);
 
     return (
-        <>
-            <Head>
-                <title>Home - Assistants & Alumni Portal</title>
-            </Head>
-            <Layout>
-                <h1 className='text-2xl font-semibold'>Welcome home!</h1>
-                <div className='flex items-center justify-evenly'>
-                    <Image
-                        src='/home_illustration.png'
-                        width={500}
-                        height={500}
-                        layout='fixed'
-                        objectFit='contain'
-                    />
+        <Layout>
+            <h1 className='text-2xl font-semibold'>Welcome home!</h1>
+            <div className='flex flex-col-reverse md:flex-row items-center justify-evenly'>
+                <Image
+                    src='/home_illustration.png'
+                    width={500}
+                    height={500}
+                    objectFit='contain'
+                />
 
-                    <div className='w-1/2'>
-                        <h1 className='text-3xl font-bold mb-8'>
-                            Hi there! 👋🏻
-                        </h1>
-                        <p className='text-lg'>
-                            Now with{' '}
-                            <span className='font-semibold text-blue-500'>
-                                IMV Assistants & Alumni Portal
-                            </span>
-                            , you can manage your profile, write a blog,
-                            organize upcoming events, and many more!
-                        </p>
-                        <p className='text-lg mt-8'>
-                            Let's starts by completing your profile info!
-                        </p>
-                        <button
-                            onClick={() => router.push('/profile')}
-                            className='flex justify-center items-center gap-4 mt-8 px-8 h-12 rounded-lg uppercase font-semibold text-sm text-white bg-blue-500 focus:outline-none hover:bg-blue-700'>
-                            <p>Edit your profile</p>
-                            <PencilIcon className='w-6 h-6' />
-                        </button>
-                    </div>
+                <div className='w-full md:w-1/2'>
+                    <h1 className='text-3xl font-bold mt-8 md:mt-0 mb-8'>
+                        Hi there! 👋🏻
+                    </h1>
+                    <p className='text-lg'>
+                        Now with{' '}
+                        <span className='font-semibold text-blue-500'>
+                            IMV Assistants & Alumni Portal
+                        </span>
+                        , you can manage your profile, write a blog, organize
+                        upcoming events, and many more!
+                    </p>
+                    <p className='text-lg mt-8'>
+                        Let's starts by completing your profile info!
+                    </p>
+                    <button
+                        onClick={() => router.push('/profile')}
+                        className='flex justify-center items-center gap-4 mt-8 px-6 h-12 rounded-lg uppercase font-semibold text-sm text-white bg-blue-500 focus:outline-none hover:bg-blue-700'>
+                        <p>Edit your profile</p>
+                        <PencilIcon className='w-6 h-6' />
+                    </button>
                 </div>
-            </Layout>
-        </>
+            </div>
+        </Layout>
     );
 }
