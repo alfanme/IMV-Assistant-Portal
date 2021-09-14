@@ -2,83 +2,93 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import Loading from '../../components/Loading';
-import { useState } from 'react';
-import { supabase } from '../../utils/supabaseClient';
+import { useState, useEffect } from 'react';
 import { LoginIcon } from '@heroicons/react/outline';
+import useCreateUser from '../../hooks/useSignUp';
+import useLogin from '../../hooks/useLogin';
+import useProfile from '../../hooks/useProfile';
+import { useRouter } from 'next/router';
 
 export default function login() {
+    const router = useRouter();
+    console.log('Rerender:', router.pathname);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [signUp, setSignUp] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [message, setMessage] = useState({
+        text: '',
+        color: '',
+    });
 
-    const handleSignUp = async () => {
-        try {
+    const { data: profile, isSuccess, isLoading } = useProfile();
+
+    if (isSuccess && profile) {
+        router.replace('/');
+    }
+
+    const createUserMutation = useCreateUser({
+        email,
+        password,
+    });
+
+    const loginMutation = useLogin({
+        email,
+        password,
+    });
+
+    useEffect(() => {
+        if (createUserMutation.isLoading) {
             setLoading(true);
-            const { user, error } = await supabase.auth.signUp({
-                email,
-                password,
-            });
-            if (error) setErrorMessage(error.message);
-            if (user) alert('Please confirm your email before login!');
-        } catch (error) {
-            setErrorMessage(error);
-        } finally {
+        }
+
+        if (createUserMutation.isSuccess) {
             setLoading(false);
             setSignUp(false);
-        }
-    };
-
-    const handleLogin = async () => {
-        try {
-            setLoading(true);
-            const { user, error } = await supabase.auth.signIn({
-                email,
-                password,
+            setMessage({
+                text: 'Please confirm your email address!',
+                color: 'text-blue-500',
             });
-            if (error?.message === 'Email not confirmed')
-                alert('Please confirm your email before login!');
-            if (error) setErrorMessage(error.message);
-            if (user) {
-                try {
-                    const { data: profile, error: profileError } =
-                        await supabase
-                            .from('profiles')
-                            .select('email')
-                            .match({ email: user.email });
-
-                    if (profileError) console.log(profileError);
-                    await console.log('profile email', profile);
-                    if (profile.length === 0) {
-                        const { error } = await supabase
-                            .from('profiles')
-                            .insert(
-                                {
-                                    user_id: user.id,
-                                    email: user.email,
-                                },
-                                { returning: 'minimal' }
-                            );
-                        if (error) setErrorMessage(error.message);
-                    } else {
-                        console.log('Profile sudah ada');
-                    }
-                } catch (error) {
-                    setErrorMessage(error);
-                }
-            }
-        } catch (error) {
-            setErrorMessage(error);
-        } finally {
-            setLoading(false);
         }
-    };
+
+        if (createUserMutation.isError) {
+            setLoading(false);
+            setSignUp(true);
+            setMessage({
+                text: createUserMutation.error.message,
+                color: 'text-red-500',
+            });
+        }
+
+        console.log('SignUp status:', createUserMutation.status);
+    }, [createUserMutation.status]);
+
+    useEffect(() => {
+        if (loginMutation.isLoading) {
+            setLoading(true);
+        }
+
+        if (loginMutation.isSuccess) {
+            setLoading(false);
+            router.replace('/');
+        }
+
+        if (loginMutation.isError) {
+            setLoading(false);
+            setMessage({
+                text: loginMutation.error.message,
+                color: 'text-red-500',
+            });
+        }
+
+        console.log('Login status:', loginMutation.status);
+    }, [loginMutation.status]);
 
     const inputClass =
         'w-full h-12 px-4 rounded-lg bg-gray-100 focus:outline-none';
 
-    if (loading) return <Loading />;
+    if (loading || isLoading) return <Loading />;
     else
         return (
             <>
@@ -100,8 +110,9 @@ export default function login() {
                     </h1>
 
                     <div className='flex flex-col items-center w-80 mb-16 gap-y-4'>
-                        <p className='text-sm font-semibold text-red-500 text-center'>
-                            {errorMessage}
+                        <p
+                            className={`text-sm font-semibold ${message.color} text-center`}>
+                            {message.text}
                         </p>
                         <input
                             onChange={e => setEmail(e.target.value)}
@@ -122,7 +133,7 @@ export default function login() {
                         {signUp ? (
                             <>
                                 <button
-                                    onClick={handleSignUp}
+                                    onClick={() => createUserMutation.mutate()}
                                     className='flex justify-center items-center space-x-2 w-full h-12 rounded-lg bg-pink-500 text-white'>
                                     <p className='uppercase text-sm font-semibold tracking-wide'>
                                         Sign Up
@@ -141,7 +152,7 @@ export default function login() {
                         ) : (
                             <>
                                 <button
-                                    onClick={handleLogin}
+                                    onClick={() => loginMutation.mutate()}
                                     className='flex justify-center items-center space-x-2 w-full h-12 rounded-lg bg-blue-500 text-white'>
                                     <p className='uppercase text-sm font-semibold tracking-wide'>
                                         Login

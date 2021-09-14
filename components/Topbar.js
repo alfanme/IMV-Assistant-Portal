@@ -1,23 +1,32 @@
 import Image from 'next/image';
 import { LogoutIcon } from '@heroicons/react/outline';
-import { supabase } from '../utils/supabaseClient';
-import { useProfile } from '../store/profileContext';
 import { useRouter } from 'next/router';
+import useProfile from '../hooks/useProfile';
+import useLogOut from '../hooks/useLogout';
 
 export default function Topbar() {
     const router = useRouter();
-    const { profile } = useProfile();
 
-    console.log(profile);
+    const { data: profile } = useProfile();
+    const logoutMutation = useLogOut();
+
+    if (logoutMutation.isSuccess) {
+        router.replace('/auth');
+    }
 
     const RoleBadge = () => {
         let pathname = router.pathname;
         let rolename = '';
 
-        if (profile.imv_role && profile.webinar_role && profile.training_role) {
-            if (pathname === '/webinar') rolename = profile.webinar_role;
-            else if (pathname === '/training') rolename = profile.training_role;
-            else rolename = profile.imv_role;
+        if (
+            profile?.imv_role &&
+            profile?.webinar_role &&
+            profile?.training_role
+        ) {
+            if (pathname === '/webinar') rolename = profile?.webinar_role;
+            else if (pathname === '/training')
+                rolename = profile?.training_role;
+            else rolename = profile?.imv_role;
         } else {
             rolename = 'No Role';
         }
@@ -38,12 +47,12 @@ export default function Topbar() {
                 <div className='flex items-center gap-x-4'>
                     <div className='text-right'>
                         <p className='text-sm md:text-lg font-semibold'>
-                            {profile.fullname
-                                ? profile.fullname
-                                : profile.email}
+                            {profile?.fullname
+                                ? profile?.fullname
+                                : profile?.email}
                         </p>
                         <div
-                            onClick={() => supabase.auth.signOut()}
+                            onClick={() => logoutMutation.mutate()}
                             className='flex justify-end items-center space-x-1 text-gray-500 cursor-pointer'>
                             <LogoutIcon className='w-4 h-4' />
                             <p className='text-xs'>Sign out</p>
@@ -51,8 +60,8 @@ export default function Topbar() {
                     </div>
                     <Image
                         src={
-                            profile.photoURL
-                                ? profile.photoURL
+                            profile?.photoURL
+                                ? profile?.photoURL
                                 : '/userDefaultPhoto.png'
                         }
                         width={50}

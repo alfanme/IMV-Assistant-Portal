@@ -1,62 +1,59 @@
 import Layout from '../components/Layout';
-import { supabase } from '../utils/supabaseClient';
 import { useState, useEffect } from 'react';
 import Loading from '../components/Loading';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
-import { useProfile } from '../store/profileContext';
+import useProfile from '../hooks/useProfile';
+import useUpdateProfile from '../hooks/useUpdateProfile';
 
 export default function profile() {
-    const { profile, setProfile } = useProfile();
+    const {
+        data: profileInitialData,
+        isLoading,
+        isSuccess,
+        status,
+        refetch: refetchProfile,
+    } = useProfile();
+
+    const [profile, setProfile] = useState({});
     const [loading, setLoading] = useState(false);
     const [imageFile, setImageFile] = useState(null);
-    const [userPhoto, setUserPhoto] = useState(profile.photoURL);
+    const [userPhoto, setUserPhoto] = useState();
 
-    const handleUpdateProfile = async () => {
-        try {
+    useEffect(() => {
+        if (isSuccess) {
+            setProfile(profileInitialData);
+            setUserPhoto(profileInitialData.photoURL);
+            console.log(profile, userPhoto);
+        }
+    }, [status]);
+
+    const updateProfileMutation = useUpdateProfile(profile, imageFile);
+
+    useEffect(() => {
+        if (updateProfileMutation.isLoading) {
             setLoading(true);
-            const user = supabase.auth.user();
-            let photoURL = profile.photoURL ? profile.photoURL : null;
+        }
 
-            if (imageFile) {
-                console.log(imageFile);
-                const filename =
-                    profile.user_id +
-                    '-' +
-                    imageFile.name.split('.')[0] +
-                    '.' +
-                    imageFile.name.split('.')[1];
-
-                console.log('upload file baru');
-                const { data, error } = await supabase.storage
-                    .from('user-photos')
-                    .upload(`public/${filename}`, imageFile);
-                console.log(data);
-                if (error) throw error;
-
-                const { publicURL, error: publicURLError } =
-                    await supabase.storage
-                        .from('user-photos')
-                        .getPublicUrl(`public/${filename}`);
-
-                photoURL = publicURL;
-
-                if (publicURLError) throw publicURLError;
-            }
-
-            const { data: userProfile, error: userProfileError } =
-                await supabase
-                    .from('profiles')
-                    .update({ ...profile, photoURL })
-                    .match({ user_id: user.id });
-
-            await console.log(userProfile);
-
-            if (userProfileError) throw userProfileError;
-        } catch (error) {
-            alert(error.message);
-        } finally {
+        if (updateProfileMutation.isSuccess) {
+            refetchProfile();
             setLoading(false);
+        }
+
+        if (updateProfileMutation.isError) {
+            alert(updateProfileMutation.error.message);
+        }
+    }, [updateProfileMutation.status]);
+
+    const handleUpdateProfile = () => {
+        if (
+            JSON.stringify(profile) !== JSON.stringify(profileInitialData) ||
+            imageFile
+        ) {
+            console.log('Ada perubahan pada data!');
+            updateProfileMutation.mutate();
+        } else {
+            console.log('Tidak ada perubahan pada data!');
         }
     };
 
@@ -77,7 +74,6 @@ export default function profile() {
         }
 
         setYears(periods);
-        console.log(years);
     }, []);
 
     const imvRoles = [
@@ -132,14 +128,15 @@ export default function profile() {
         { title: 'Data Science Instructor', value: 'Data Science Instructor' },
     ];
 
-    if (loading) return <Loading />;
+    if (loading || isLoading) return <Loading />;
+
     return (
         <Layout>
             <h1 className='text-2xl font-semibold mb-8'>Account Details</h1>
             <div className='flex flex-col'>
                 <label htmlFor='user-photo'>Profile Picture</label>
                 <div className='flex gap-x-4 items-end mt-2 mb-4'>
-                    {profile.photoURL ? (
+                    {userPhoto ? (
                         <Image
                             src={
                                 imageFile
@@ -167,7 +164,6 @@ export default function profile() {
                             className='rounded-full'
                         />
                     )}
-
                     <input
                         type='file'
                         id='user-photo'
@@ -181,7 +177,7 @@ export default function profile() {
                     onChange={e =>
                         setProfile({ ...profile, fullname: e.target.value })
                     }
-                    defaultValue={profile.fullname}
+                    defaultValue={profile?.fullname}
                     className={inputClass}
                     id='fullname'
                 />
@@ -191,7 +187,7 @@ export default function profile() {
                     onChange={e =>
                         setProfile({ ...profile, email: e.target.value })
                     }
-                    defaultValue={profile.email}
+                    defaultValue={profile?.email}
                     placeholder='Email'
                     className={inputClass}
                     id='email'
@@ -202,7 +198,7 @@ export default function profile() {
                     onChange={e =>
                         setProfile({ ...profile, bio: e.target.value })
                     }
-                    defaultValue={profile.bio}
+                    defaultValue={profile?.bio}
                     className={inputClass}
                     id='bio'
                 />
@@ -217,7 +213,7 @@ export default function profile() {
                             professional_summary: e.target.value,
                         })
                     }
-                    defaultValue={profile.professional_summary}
+                    defaultValue={profile?.professional_summary}
                     className={`${inputClass} py-2 h-36 resize-none`}
                     id='professional-summary'
                 />
@@ -225,7 +221,7 @@ export default function profile() {
                 <div className='relative'>
                     <select
                         id='year'
-                        value={profile.year ? profile.year : ''}
+                        value={profile?.year ? profile?.year : ''}
                         onChange={e =>
                             setProfile({
                                 ...profile,
@@ -246,7 +242,7 @@ export default function profile() {
                 <div className='relative'>
                     <select
                         id='imv-role'
-                        value={profile.imv_role ? profile.imv_role : ''}
+                        value={profile?.imv_role ? profile?.imv_role : ''}
                         onChange={e =>
                             setProfile({
                                 ...profile,
@@ -266,7 +262,9 @@ export default function profile() {
                 <div className='relative'>
                     <select
                         id='webinar-role'
-                        value={profile.webinar_role ? profile.webinar_role : ''}
+                        value={
+                            profile?.webinar_role ? profile?.webinar_role : ''
+                        }
                         onChange={e =>
                             setProfile({
                                 ...profile,
@@ -287,7 +285,7 @@ export default function profile() {
                     <select
                         id='training-role'
                         value={
-                            profile.training_role ? profile.training_role : ''
+                            profile?.training_role ? profile?.training_role : ''
                         }
                         onChange={e =>
                             setProfile({
