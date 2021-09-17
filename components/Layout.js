@@ -8,8 +8,6 @@ export default function Layout({ children }) {
     const router = useRouter();
     const { isLoading, isError } = useProfile();
 
-    console.log('Protedted:', router.pathname);
-
     if (isLoading) return <Loading />;
 
     if (isError) {
@@ -22,7 +20,7 @@ export default function Layout({ children }) {
             <Sidebar />
             <div className='pb-24 md:pb-0 w-full h-screen bg-white rounded-b-2xl md:rounded-none md:rounded-l-[2em] md:overflow-y-scroll md:overflow-x-hidden'>
                 <Topbar />
-                <div className='p-4 pb-32 md:p-8'>{children}</div>
+                <div className='flex flex-col p-4 pb-32 md:p-8'>{children}</div>
             </div>
         </div>
     );
