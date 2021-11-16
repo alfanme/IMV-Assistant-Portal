@@ -8,6 +8,7 @@ import {
     BeakerIcon,
 } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 
 const iconStyle = 'w-6 h-6';
 
@@ -46,6 +47,18 @@ const menuItems = [
 
 export default function SideBar() {
     const router = useRouter();
+    const [mainPath, setMainPath] = useState('/');
+
+    // check if path has subpath, then extract only the main path
+    useEffect(() => {
+        let path = router.pathname;
+        let pathSplits = path.split('/');
+        if (pathSplits.length > 2) {
+            setMainPath(`/${pathSplits[1]}`);
+        } else {
+            setMainPath(path);
+        }
+    }, []);
 
     return (
         <div className='fixed bottom-0 md:sticky md:top-0 md:left-0 z-10 flex-shrink-0 flex md:flex-col justify-center md:justify-start items-center md:items-baseline p-4 md:p-8 w-screen md:w-80 h-20 md:h-screen text-white bg-gray-900'>
@@ -65,9 +78,10 @@ export default function SideBar() {
             <ul className='flex flex-row md:flex-col justify-between md:justify-start md:gap-3 md:-mx-2 px-2 md:px-0 w-full md:w-auto'>
                 {menuItems.map((menu, idx) => {
                     let color =
-                        menu.path === router.pathname
+                        menu.path === mainPath
                             ? 'bg-blue-500 text-white hover:bg-blue-500 hover:text-white'
                             : 'bg-gray-900 text-gray-400 hover:bg-gray-800 hover:text-white';
+
                     return (
                         <li
                             onClick={() => router.push(menu.path)}
