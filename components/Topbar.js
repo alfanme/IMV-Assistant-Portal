@@ -41,7 +41,7 @@ export default function Topbar() {
     };
 
     return (
-        <div className='sticky top-0 left-0 p-4 md:p-8 flex justify-end z-10 bg-white'>
+        <div className='sticky top-0 left-0 px-4 py-2 md:px-8 md:py-4 flex justify-end z-10 bg-white'>
             <div className='flex justify-between items-center w-full'>
                 <RoleBadge />
                 <div className='flex items-center gap-x-4'>
@@ -64,8 +64,8 @@ export default function Topbar() {
                                 ? profile?.photoURL
                                 : '/userDefaultPhoto.png'
                         }
-                        width={50}
-                        height={50}
+                        width={42}
+                        height={42}
                         objectFit='cover'
                         alt='Profile Photo'
                         className='rounded-full'
