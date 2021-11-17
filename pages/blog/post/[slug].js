@@ -58,7 +58,6 @@ export default function post({ slug }) {
                 )}
                 readOnly={true}
             />
-            <p>{readBlogData?.author?.fullname}</p>
         </Layout>
     );
 }
