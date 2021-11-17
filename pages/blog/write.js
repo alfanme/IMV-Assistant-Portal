@@ -65,6 +65,9 @@ export default function write() {
     return (
         <Layout>
             <BlogLayout>
+                <h2 className='md:hidden ml-4 mb-4 text-blue-500'>
+                    Write Blog
+                </h2>
                 <div className='flex flex-col justify-center p-4 border-4 border-gray-100 rounded-lg'>
                     <input
                         defaultValue={blogTitle}

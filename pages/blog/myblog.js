@@ -12,6 +12,7 @@ export default function myblog() {
     return (
         <Layout>
             <BlogLayout>
+                <h2 className='md:hidden ml-4 mb-4 text-blue-500'>My Blog</h2>
                 <div className='flex flex-col gap-8'>
                     {myBlogData?.map((data, idx) => (
                         <BlogCard key={idx} blogData={data} />
