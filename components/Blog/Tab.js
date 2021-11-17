@@ -39,7 +39,7 @@ export default function Tab() {
                             key={idx}
                             className={`flex gap-2 justify-center items-center flex-1 h-10 text-sm tracking-wide font-semibold rounded-lg ${color}`}>
                             {menu.icon}
-                            <p>{menu.title}</p>
+                            <p className='hidden md:block'>{menu.title}</p>
                         </button>
                     );
                 })}
