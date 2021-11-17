@@ -87,16 +87,16 @@ export default function Card({ blogData }) {
                 <div className='absolute bottom-8 right-8 flex items-center gap-4'>
                     <button
                         onClick={editBlogHandler}
-                        className='flex items-center gap-1 px-4 py-2 text-xs font-medium text-yellow-500 shadow-lg hover:shadow-md rounded-lg'>
+                        className='flex items-center gap-1 px-2 md:px-4 py-2 text-xs font-medium text-yellow-500 shadow-lg hover:shadow-md rounded-lg'>
                         <CogIcon className='w-4 h-4' />
-                        <p>Edit</p>
+                        <p className='hidden md:block'>Edit</p>
                     </button>
                     <button
                         onClick={() => setShowModal(true)}
                         className
-                        className='flex items-center gap-1 px-4 py-2 text-xs font-medium text-red-500 shadow-lg hover:shadow-md rounded-lg'>
+                        className='flex items-center gap-1 px-2 md:px-4 py-2 text-xs font-medium text-red-500 shadow-lg hover:shadow-md rounded-lg'>
                         <TrashIcon className='w-4 h-4' />
-                        <p>Delete</p>
+                        <p className='hidden md:block'>Delete</p>
                     </button>
                 </div>
             )}
