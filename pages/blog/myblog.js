@@ -13,7 +13,7 @@ export default function myblog() {
         <Layout>
             <BlogLayout>
                 <h2 className='md:hidden ml-4 mb-4 text-blue-500'>My Blog</h2>
-                <div className='flex flex-col gap-8'>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
                     {myBlogData?.map((data, idx) => (
                         <BlogCard key={idx} blogData={data} />
                     ))}

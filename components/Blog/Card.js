@@ -31,9 +31,7 @@ export default function Card({ blogData }) {
             }
         }
 
-        let previewBlocks = [parsedBody['blocks'][0]];
-        thumbnail && (previewBlocks = [...previewBlocks, thumbnail]);
-        parsedBody['blocks'] = previewBlocks;
+        parsedBody['blocks'] = [thumbnail];
 
         setPreviewBody(parsedBody);
     }, []);
@@ -56,9 +54,10 @@ export default function Card({ blogData }) {
             <div
                 onClick={readBlog}
                 className='group p-8 rounded-xl shadow-md cursor-pointer'>
-                <h1 className='mb-2 group-hover:text-blue-500'>{title}</h1>
+                <h2 className='mb-2 group-hover:text-blue-500'>{title}</h2>
                 <DateInfo timestamp={created_at} />
                 <Editor
+                    editorClassName='my-4'
                     toolbarClassName='hide-toolbar'
                     editorState={EditorState.createWithContent(
                         convertFromRaw(previewBody)
@@ -89,14 +88,12 @@ export default function Card({ blogData }) {
                         onClick={editBlogHandler}
                         className='flex items-center gap-1 px-2 md:px-4 py-2 text-xs font-medium text-yellow-500 shadow-lg hover:shadow-md rounded-lg'>
                         <CogIcon className='w-4 h-4' />
-                        <p className='hidden md:block'>Edit</p>
                     </button>
                     <button
                         onClick={() => setShowModal(true)}
                         className
                         className='flex items-center gap-1 px-2 md:px-4 py-2 text-xs font-medium text-red-500 shadow-lg hover:shadow-md rounded-lg'>
                         <TrashIcon className='w-4 h-4' />
-                        <p className='hidden md:block'>Delete</p>
                     </button>
                 </div>
             )}
