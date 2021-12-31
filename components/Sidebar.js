@@ -61,7 +61,7 @@ export default function SideBar() {
     }, []);
 
     return (
-        <div className='fixed bottom-0 md:sticky md:top-0 md:left-0 z-10 flex-shrink-0 flex md:flex-col justify-center md:justify-start items-center md:items-baseline p-4 md:p-8 w-screen md:w-80 h-20 md:h-screen text-white bg-gray-900'>
+        <div className='fixed bottom-0 md:sticky md:top-0 md:left-0 z-10 flex-shrink-0 flex md:flex-col justify-center md:justify-start items-center md:items-baseline p-4 md:p-8 w-screen md:w-80 h-20 md:h-screen text-gray-800 md:text-white bg-white md:bg-gray-900'>
             <div className='hidden md:flex items-center space-x-4 mb-16'>
                 <Image
                     src='/logo.webp'
@@ -75,12 +75,12 @@ export default function SideBar() {
                     <p className='text-xs'>Assistants & Alumni Portal</p>
                 </div>
             </div>
-            <ul className='flex flex-row md:flex-col justify-between md:justify-start md:gap-3 md:-mx-2 px-2 md:px-0 w-full md:w-auto'>
+            <ul className='flex flex-row md:flex-col justify-between md:justify-start md:gap-3 md:-mx-2 px-1 md:px-0 w-full md:w-auto'>
                 {menuItems.map((menu, idx) => {
                     let color =
                         menu.path === mainPath
-                            ? 'bg-blue-500 text-white hover:bg-blue-500 hover:text-white'
-                            : 'bg-gray-900 text-gray-400 hover:bg-gray-800 hover:text-white';
+                            ? 'bg-blue-100 md:bg-blue-500 text-blue-500 md:text-white hover:bg-blue-100 md:hover:bg-blue-500 hover:text-blue-500 md:hover:text-white'
+                            : 'bg-white md:bg-gray-900 text-gray-400 hover:bg-gray-100 md:hover:bg-gray-800 hover:text-gray-800 md:hover:text-white';
 
                     return (
                         <li
