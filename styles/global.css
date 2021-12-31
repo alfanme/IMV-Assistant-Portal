@@ -22,3 +22,11 @@ p {
 .hide-toolbar {
     display: none !important;
 }
+
+label {
+    @apply ml-1 text-sm;
+}
+
+button {
+    @apply font-semibold text-sm;
+}
