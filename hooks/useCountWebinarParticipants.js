@@ -2,13 +2,26 @@ import { useQuery } from 'react-query';
 import { supabase } from '../utils/supabaseClient';
 
 const countWebinarParticipants = async () => {
+    const { data: webinars } = await supabase
+        .from('webinars')
+        .select('id, title, open_registration')
+        .eq('open_registration', true);
+
     const {
         data,
         count: participants,
         error: countError,
     } = await supabase
         .from('webinar_participants')
-        .select('status, organization, attendance', { count: 'exact' });
+        .select('status, organization, attendance, webinar', {
+            count: 'exact',
+        })
+        .in(
+            'webinar',
+            webinars.map(webinar => webinar.id)
+        );
+
+    console.log(data);
 
     if (countError) throw new Error(countError.message);
 
@@ -19,9 +32,9 @@ const countWebinarParticipants = async () => {
             d.organization.toLowerCase().includes('hmtt') ||
             d.organization.toLowerCase().includes('telekomunikasi')
     )?.length;
-    const maxPage = Math.ceil(participants / 10) - 1;
+    const maxPage = participants != 0 ? Math.ceil(participants / 10) - 1 : 0;
 
-    return { participants, students, attendance, hmtt, maxPage };
+    return { participants, students, attendance, hmtt, maxPage, webinars };
 };
 
 export default function useCountWebinarParticipants() {
