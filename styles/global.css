@@ -24,7 +24,7 @@ p {
 }
 
 label {
-    @apply ml-1 text-sm;
+    @apply ml-1 mb-1 text-sm;
 }
 
 button {
