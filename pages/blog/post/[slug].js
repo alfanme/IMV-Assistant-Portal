@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, convertFromRaw } from 'draft-js';
-import DateInfo from '../../../components/Blog/DateInfo';
+import DateInfo from '../../../components/DateInfo';
 import Image from 'next/image';
 
 const Editor = dynamic(
