@@ -32,7 +32,6 @@ export default function Form({ formTitle, data, closeForm, editMode }) {
                 <label htmlFor='held_on'>Held on</label>
                 <DatePicker
                     name='held_on'
-                    // defaultValue={data?.held_on ? data?.held_on : heldOn}
                     className='mb-8 px-2 w-full h-10 rounded-md bg-gray-100 focus:outline-none'
                     selected={heldOn}
                     onChange={date => {
