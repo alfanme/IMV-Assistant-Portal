@@ -4,6 +4,8 @@ import {
     ChevronLeftIcon,
     ChevronRightIcon,
     DocumentDownloadIcon,
+    CheckCircleIcon,
+    XCircleIcon,
 } from '@heroicons/react/solid';
 import useWebinarParticipants from '../../hooks/useWebinarParticipants';
 import useCountWebinarParticipants from '../../hooks/useCountWebinarParticipants';
@@ -11,6 +13,7 @@ import useDownloadCSV from '../../hooks/useDownloadCSV';
 import Loading from '../../components/Loading';
 import { useState, useEffect } from 'react';
 import Tab from '../../components/Webinar/Tab';
+import Image from 'next/image';
 
 export default function webinar() {
     const [page, setPage] = useState(0);
@@ -117,37 +120,66 @@ export default function webinar() {
             </ul>
 
             <div className='overflow-x-scroll mt-4'>
-                <table className='table-auto text-center w-full text-sm'>
+                <table className='table-auto text-left text-sm'>
                     <thead className='whitespace-nowrap'>
-                        <tr className='h-8 bg-gray-100 rounded-lg'>
-                            <th className='px-4'>No.</th>
-                            <th className='px-4'>Registered on</th>
-                            <th className='px-4'>Webinar</th>
-                            <th className='px-4'>Full Name</th>
-                            <th className='px-4'>Email</th>
-                            <th className='px-4'>Phone</th>
-                            <th className='px-4'>Status</th>
-                            <th className='px-4'>Organization</th>
-                            <th className='px-4'>Attendance</th>
+                        <tr className='bg-gray-100 rounded-lg'>
+                            <th className='p-4'>No.</th>
+                            <th className='p-4'>Photo</th>
+                            <th className='p-4'>Full Name</th>
+                            <th className='p-4'>Email Address</th>
+                            <th className='p-4'>Phone</th>
+                            <th className='p-4'>Status</th>
+                            <th className='p-4'>Organization</th>
+                            <th className='p-4'>Attendance</th>
+                            <th className='p-4'>Webinar</th>
+                            <th className='p-4'>Registered on</th>
                         </tr>
                     </thead>
 
-                    <tbody className='whitespace-nowrap'>
+                    <tbody>
                         {participants?.map((participant, idx) => (
                             <tr
-                                className={`h-8 ${
-                                    idx % 2 !== 0 && 'bg-gray-100'
-                                } rounded-lg`}
+                                className={`${idx % 2 !== 0 && 'bg-gray-100'}`}
                                 key={participant.id}>
-                                <td>{`${page * 10 + idx + 1}.`}</td>
-                                <td>{formatDate(participant.created_at)}</td>
-                                <td>{participant.webinar.title}</td>
-                                <td>{participant.fullname}</td>
-                                <td>{participant.email}</td>
-                                <td>{participant.phone}</td>
-                                <td>{participant.status}</td>
-                                <td>{participant.organization}</td>
-                                <td>{participant.attendance.toString()}</td>
+                                <td className='p-4'>{`${
+                                    page * 10 + idx + 1
+                                }.`}</td>
+                                <td className='p-4'>
+                                    <Image
+                                        src={
+                                            participant.profileURL
+                                                ? participant.profileURL
+                                                : '/logo.webp'
+                                        }
+                                        width={32}
+                                        height={32}
+                                        layout='fixed'
+                                        objectFit='cover'
+                                        className='rounded-full'
+                                    />
+                                </td>
+                                <td className='p-4'>{participant.fullname}</td>
+                                <td className='p-4'>{participant.email}</td>
+                                <td className='p-4'>{participant.phone}</td>
+                                <td className='p-4'>{participant.status}</td>
+                                <td className='p-4'>
+                                    {participant.organization}
+                                </td>
+                                <td className='p-4'>
+                                    <div className='flex justify-center items-center'>
+                                        {participant.attendance ? (
+                                            <CheckCircleIcon className='w-6 h-6 text-green-500' />
+                                        ) : (
+                                            <XCircleIcon className='w-6 h-6 text-red-500' />
+                                        )}
+                                    </div>
+                                </td>
+                                <td className='p-4'>
+                                    {participant.webinar.title}
+                                </td>
+                                <td className='p-4'>
+                                    {formatDate(participant.created_at)}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
