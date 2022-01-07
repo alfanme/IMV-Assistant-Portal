@@ -21,12 +21,14 @@ export default function Card({ blogData }) {
     const router = useRouter();
 
     const [previewBody, setPreviewBody] = useState(JSON.parse(body));
+    const [thumbnailIsExist, setThumbnailIsExist] = useState(false);
     useEffect(() => {
         const parsedBody = JSON.parse(body);
         let thumbnail;
         for (let row of parsedBody['blocks']) {
             if (row.type === 'atomic') {
                 thumbnail = row;
+                setThumbnailIsExist(true);
                 break;
             }
         }
@@ -50,26 +52,30 @@ export default function Card({ blogData }) {
     };
 
     return (
-        <div className='relative'>
+        <div className='relative mb-8 w-full break-inside-avoid-column'>
             <div
                 onClick={readBlog}
-                className='group p-8 rounded-xl shadow-md cursor-pointer'>
+                className='group p-6 rounded-xl cursor-pointer hover:shadow-xl hover:shadow-gray-200'>
                 <h2 className='mb-2 group-hover:text-blue-500'>{title}</h2>
                 <DateInfo timestamp={created_at} />
-                <Editor
-                    editorClassName='my-4'
-                    toolbarClassName='hide-toolbar'
-                    editorState={EditorState.createWithContent(
-                        convertFromRaw(previewBody)
-                    )}
-                    readOnly={true}
-                />
+                {thumbnailIsExist && (
+                    <Editor
+                        editorClassName='my-4'
+                        toolbarClassName='hide-toolbar'
+                        editorState={EditorState.createWithContent(
+                            convertFromRaw(previewBody)
+                        )}
+                        readOnly={true}
+                    />
+                )}
+
                 <div className='flex items-center gap-2 mt-4'>
                     <Image
                         src={author.photoURL}
                         width='32'
                         height='32'
                         layout='fixed'
+                        objectFit='cover'
                         className='rounded-full'
                     />
                     <div className=''>
@@ -83,7 +89,7 @@ export default function Card({ blogData }) {
                 </div>
             </div>
             {userProfile?.user_id === author.user_id && (
-                <div className='absolute bottom-8 right-8 flex items-center gap-4'>
+                <div className='absolute bottom-6 right-6 flex items-center gap-4'>
                     <button
                         onClick={editBlogHandler}
                         className='flex items-center gap-1 px-2 md:px-4 py-2 text-xs font-medium text-yellow-500 shadow-lg hover:shadow-md rounded-lg'>
@@ -105,7 +111,6 @@ export default function Card({ blogData }) {
                 onClickYes={() => {
                     deleteBlogMutation.mutate();
                     setShowModal(false);
-                    router.reload(window.location.pathname);
                 }}
             />
         </div>
