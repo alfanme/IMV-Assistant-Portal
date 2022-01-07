@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, convertFromRaw } from 'draft-js';
 import { useRouter } from 'next/router';
-import DateInfo from './DateInfo';
+import DateInfo from '../DateInfo';
 import { CogIcon, TrashIcon } from '@heroicons/react/solid';
 import useProfile from '../../hooks/useProfile';
 import Modal from '../../components/Modal';
