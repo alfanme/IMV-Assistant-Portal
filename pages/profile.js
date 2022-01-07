@@ -135,7 +135,7 @@ export default function profile() {
             <h1 className='text-2xl font-semibold mb-8'>Account Details</h1>
             <div className='flex flex-col'>
                 <label htmlFor='user-photo'>Profile Picture</label>
-                <div className='flex gap-x-4 items-end mt-2 mb-4'>
+                <div className='flex gap-x-4 items-center mt-2 mb-4'>
                     {userPhoto ? (
                         <Image
                             src={
@@ -167,7 +167,8 @@ export default function profile() {
                     <input
                         type='file'
                         id='user-photo'
-                        className={`${inputClass} py-2 mb-0 mt-0`}
+                        accept='image/*'
+                        className={`mb-0 mt-0 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-500 hover:file:bg-blue-50`}
                         onChange={e => setImageFile(e.target.files[0])}
                     />
                 </div>
