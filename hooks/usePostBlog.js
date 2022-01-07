@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { supabase } from '../utils/supabaseClient';
 import slugger from 'slugger';
 
@@ -19,7 +19,12 @@ const postBlog = async ({ title, body }) => {
 };
 
 export function usePostBlog({ title, body }) {
-    return useMutation(() => postBlog({ title, body }));
+    return useMutation(() => postBlog({ title, body }), {
+        onSuccess: () => {
+            alert('You blog was successfully posted!');
+            location.reload();
+        },
+    });
 }
 
 const updateBlog = async ({ title, body, blogId }) => {
@@ -37,11 +42,15 @@ const updateBlog = async ({ title, body, blogId }) => {
         .match({ id: blogId });
 
     if (blogUpdatesError) throw new Error(blogUpdatesError.message);
-    if (blogUpdates) alert('You blog was successfully updated!');
 };
 
 export function useUpdateBlog({ title, body, blogId }) {
-    return useMutation(() => updateBlog({ title, body, blogId }));
+    return useMutation(() => updateBlog({ title, body, blogId }), {
+        onSuccess: () => {
+            alert('You blog was successfully updated!');
+            location.reload();
+        },
+    });
 }
 
 const deleteBlog = async ({ blogId }) => {
@@ -52,9 +61,14 @@ const deleteBlog = async ({ blogId }) => {
         .match({ id: blogId });
 
     if (error) throw new Error(error.message);
-    if (data) alert('Blog was successfully deleted!');
 };
 
 export function useDeleteBlog({ blogId }) {
-    return useMutation(() => deleteBlog({ blogId }));
+    const queryClient = useQueryClient();
+    return useMutation(() => deleteBlog({ blogId }), {
+        onSuccess: () => {
+            alert('Blog was successfully deleted!');
+            queryClient.refetchQueries(['allBlog']);
+        },
+    });
 }
