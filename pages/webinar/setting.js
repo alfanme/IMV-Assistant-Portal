@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Layout from '../../components/Layout';
-import Tab from '../../components/Webinar/Tab';
 import { PlusIcon } from '@heroicons/react/solid';
 import { useWebinars } from '../../hooks/useWebinars';
 import Loading from '../../components/Loading';
@@ -30,7 +29,6 @@ export default function setting() {
     return (
         <>
             <Layout>
-                <Tab />
                 <div className='flex justify-between items-center mb-8'>
                     <h1 className='text-2xl font-semibold'>Webinar Setting</h1>
                     <button
