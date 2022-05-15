@@ -12,7 +12,6 @@ import useCountWebinarParticipants from '../../hooks/useCountWebinarParticipants
 import useDownloadCSV from '../../hooks/useDownloadCSV';
 import Loading from '../../components/Loading';
 import { useState, useEffect } from 'react';
-import Tab from '../../components/Webinar/Tab';
 import Image from 'next/image';
 
 export default function webinar() {
@@ -73,7 +72,6 @@ export default function webinar() {
 
     return (
         <Layout>
-            <Tab />
             <div className='flex justify-between items-center mb-8'>
                 <h1 className='text-2xl font-semibold'>Webinar Participants</h1>
                 <button
