@@ -94,7 +94,7 @@ export default function SideBar() {
                 })}
             </ul>
             <footer className='mt-auto hidden md:block'>
-                <p>©2021 IMV Laboratory 🇮🇩</p>
+                <p>©{new Date().getFullYear()} IMV Laboratory 🇮🇩</p>
             </footer>
         </div>
     );
