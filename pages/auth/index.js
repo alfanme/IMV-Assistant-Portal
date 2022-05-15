@@ -176,7 +176,8 @@ export default function login() {
                         )}
                     </div>
                     <p className='mt-auto mb-2'>
-                        ©2021 IMV Laboratory | Bandung, Indonesia 🇮🇩
+                        ©{new Date().getFullYear()} IMV Laboratory | Bandung,
+                        Indonesia 🇮🇩
                     </p>
                 </main>
             </>
