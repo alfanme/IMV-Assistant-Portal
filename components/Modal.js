@@ -3,8 +3,8 @@ export default function Modal({
     title = 'Modal Title',
     message = 'Modal message is here.',
     primaryColor = 'bg-red-500',
-    onClickYes = () => console.log('Yes button clicked'),
-    onClickNo = () => console.log('No button clicked'),
+    onClickYes = () => {},
+    onClickNo = () => {},
 }) {
     return (
         <>

@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 
 export default function login() {
     const router = useRouter();
-    console.log('Rerender:', router.pathname);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -60,8 +59,6 @@ export default function login() {
                 color: 'text-red-500',
             });
         }
-
-        console.log('SignUp status:', createUserMutation.status);
     }, [createUserMutation.status]);
 
     useEffect(() => {
@@ -81,8 +78,6 @@ export default function login() {
                 color: 'text-red-500',
             });
         }
-
-        console.log('Login status:', loginMutation.status);
     }, [loginMutation.status]);
 
     const inputClass =

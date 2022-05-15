@@ -21,8 +21,6 @@ const countWebinarParticipants = async () => {
             webinars.map(webinar => webinar.id)
         );
 
-    console.log(data);
-
     if (countError) throw new Error(countError.message);
 
     const students = data.filter(d => d.status === 'Mahasiswa').length;

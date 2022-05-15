@@ -16,8 +16,6 @@ export function useWebinars() {
 }
 
 const toggleOpenRegistration = async (id, openRegistration) => {
-    console.log(id, openRegistration);
-
     const { error } = await supabase
         .from('webinars')
         .update({ open_registration: openRegistration })
@@ -36,8 +34,6 @@ export function useToggleOpenRegistration(id, openRegistration) {
 }
 
 const updateWebinar = async (id, title, heldOn) => {
-    console.log('UPDATE:', id, title, heldOn);
-
     const { error } = await supabase
         .from('webinars')
         .update({ title: title, held_on: heldOn })
@@ -56,8 +52,6 @@ export function useUpdateWebinar(id, title, heldOn) {
 }
 
 const addWebinar = async (title, heldOn) => {
-    console.log('ADD:', title, heldOn);
-
     const { error } = await supabase
         .from('webinars')
         .insert({ title: title, held_on: heldOn, open_registration: false });

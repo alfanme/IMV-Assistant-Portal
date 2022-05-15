@@ -26,14 +26,11 @@ export default function write() {
 
     useEffect(() => {
         if (existingBody) {
-            console.log(existingBody);
             setEditorState(
                 EditorState.createWithContent(
                     convertFromRaw(JSON.parse(existingBody))
                 )
             );
-        } else {
-            console.log('No existingBody');
         }
     }, [existingBody]);
 
@@ -51,8 +48,6 @@ export default function write() {
 
     // mutation hook side effects
     useEffect(() => {
-        console.log(postBlogMutation.status);
-
         if (postBlogMutation.isSuccess) {
             alert('Blog posted!');
         }

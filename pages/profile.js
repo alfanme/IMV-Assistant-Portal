@@ -24,7 +24,6 @@ export default function profile() {
         if (isSuccess) {
             setProfile(profileInitialData);
             setUserPhoto(profileInitialData.photoURL);
-            console.log(profile, userPhoto);
         }
     }, [status]);
 
@@ -50,10 +49,7 @@ export default function profile() {
             JSON.stringify(profile) !== JSON.stringify(profileInitialData) ||
             imageFile
         ) {
-            console.log('Ada perubahan pada data!');
             updateProfileMutation.mutate();
-        } else {
-            console.log('Tidak ada perubahan pada data!');
         }
     };
 
