@@ -5,6 +5,7 @@ import { ChevronDownIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import useProfile from '../hooks/useProfile';
 import useUpdateProfile from '../hooks/useUpdateProfile';
+import { imvRoles, webinarRoles, trainingRoles } from '../shared/data';
 
 export default function profile() {
     const {
@@ -71,58 +72,6 @@ export default function profile() {
 
         setYears(periods);
     }, []);
-
-    const imvRoles = [
-        { title: 'IMV Role', value: '' },
-        { title: 'Assistant Coordinator', value: 'Assistant Coordinator' },
-        {
-            title: 'Assistant Deputy Coordinator',
-            value: 'Assistant Deputy Coordinator',
-        },
-        { title: 'Secretary', value: 'Secretary' },
-        { title: 'Treasurer', value: 'Treasurer' },
-        {
-            title: 'Project Manager Coordiantor',
-            value: 'Project Manager Coordiantor',
-        },
-        {
-            title: 'Project Manager Member',
-            value: 'Project Manager Member',
-        },
-        { title: 'Creative Coordiantor', value: 'Creative Coordiantor' },
-        { title: 'Creative Member', value: 'Creative Member' },
-        {
-            title: 'External Relation Coordiantor',
-            value: 'External Relation Coordiantor',
-        },
-        {
-            title: 'External Relation Member',
-            value: 'External Relation Member',
-        },
-        { title: 'Logistic Coordiantor', value: 'Logistic Coordiantor' },
-        { title: 'Logistic Member', value: 'Logistic Member' },
-    ];
-    const webinarRoles = [
-        { title: 'Webinar Role', value: '' },
-        { title: 'Head of Webinar', value: 'Head of Webinar' },
-        { title: 'Event Orginizer', value: 'Event Orginizer' },
-        { title: 'Creative', value: 'Creative' },
-        { title: 'External Relation', value: 'External Relation' },
-        { title: 'Logistic', value: 'Logistic' },
-    ];
-    const trainingRoles = [
-        { title: 'Training Role', value: '' },
-        { title: 'Head of Training', value: 'Head of Training' },
-        {
-            title: 'Image Processing Instructor',
-            value: 'Image Processing Instructor',
-        },
-        {
-            title: 'Artificial Intelligence Instructor',
-            value: 'Artificial Intelligence Instructor',
-        },
-        { title: 'Data Science Instructor', value: 'Data Science Instructor' },
-    ];
 
     if (loading || isLoading) return <Loading />;
 
