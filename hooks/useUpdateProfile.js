@@ -14,8 +14,6 @@ const updateProfile = async (profile, imageFile) => {
             filename = profile.user_id + '.jpg';
         }
 
-        console.log('Update foto:', imageFile);
-        console.log('Filename:', filename);
         const { data, error } = await supabase.storage
             .from('user-photos')
             .upload(`public/${filename}`, imageFile, {
@@ -26,7 +24,6 @@ const updateProfile = async (profile, imageFile) => {
         if (error) throw new Error(error.message);
 
         if (data) {
-            console.log('Data update foto:', data);
             const { data: urlData, error: errorURLData } =
                 await supabase.storage
                     .from('user-photos')
@@ -39,7 +36,6 @@ const updateProfile = async (profile, imageFile) => {
     }
 
     if (profile) {
-        console.log('Update data diri:', profile);
         const { error } = await supabase
             .from('profiles')
             .update({

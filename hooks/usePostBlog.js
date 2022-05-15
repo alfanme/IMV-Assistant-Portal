@@ -30,8 +30,6 @@ export function usePostBlog({ title, body }) {
 const updateBlog = async ({ title, body, blogId }) => {
     const slug = slugger(title);
 
-    console.log('Blog ID: ', blogId);
-
     const { data: blogUpdates, error: blogUpdatesError } = await supabase
         .from('blog_post')
         .update({
@@ -54,7 +52,6 @@ export function useUpdateBlog({ title, body, blogId }) {
 }
 
 const deleteBlog = async ({ blogId }) => {
-    console.log(blogId);
     const { data, error } = await supabase
         .from('blog_post')
         .delete()

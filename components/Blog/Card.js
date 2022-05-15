@@ -97,7 +97,6 @@ export default function Card({ blogData }) {
                     </button>
                     <button
                         onClick={() => setShowModal(true)}
-                        className
                         className='flex items-center gap-1 px-2 md:px-4 py-2 text-xs font-medium text-red-500 shadow-lg hover:shadow-md rounded-lg'>
                         <TrashIcon className='w-4 h-4' />
                     </button>
